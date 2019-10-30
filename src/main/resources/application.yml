@@ -1,0 +1,54 @@
+server:
+  port: 12345
+  servlet:
+    context-path: /lovingmall
+spring:
+  application:
+    name: lovingmall
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/loving_mall?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+  mail:
+    host: smtp.126.com
+    port: 25
+    username: lovingliu@126.com
+    password: liubo1314520TY
+    protocol: smtp
+    default-encoding: UTF-8
+    # 自己配置
+    from: lovingliu@126.com
+
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+    password: lovingliu
+    timeout: 3000ms
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 0
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath:cn/lovingliu/**/mapper/*.xml
+logging:
+  config: classpath:log/logback-spring.xml
+
+redis:
+  key:
+    prefix:
+      authCode: "username:%s"
+      loginToken: "lovingliu:%s"
+    expire:
+      authCodeExpire: 120
+      loginTokenExpire: 604800
+
+user:
+  cookieKey: "lovingUser"
+adminUser:
+  cookieKey: "lovingAdmin"
