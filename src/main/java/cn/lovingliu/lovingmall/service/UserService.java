@@ -1,8 +1,9 @@
 package cn.lovingliu.lovingmall.service;
 
-import cn.lovingliu.lovingmall.common.ServerResponse;
 import cn.lovingliu.lovingmall.dto.UserDTO;
 import cn.lovingliu.lovingmall.mbg.model.User;
+
+import java.util.List;
 
 /**
  * @Author：LovingLiu
@@ -10,7 +11,8 @@ import cn.lovingliu.lovingmall.mbg.model.User;
  * @Date：Created in 2019-10-30
  */
 public interface UserService {
-    ServerResponse register(UserDTO userDTO);
-    User findByUserNameAndPassword(String userName, String password);
+    int register(UserDTO userDTO);
+    User findByUserNameAndPassword(UserDTO userDTO);
     int save(User user);
+    List<User> list();
 }

@@ -1,6 +1,6 @@
 package cn.lovingliu.lovingmall.common;
 
-import cn.lovingliu.lovingmall.enums.ResponseCodeEnum;
+import cn.lovingliu.lovingmall.enums.CommonCodeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -39,7 +39,7 @@ public class ServerResponse<T> implements Serializable {
     }
 
     public boolean ifSuccess() {
-        return this.code == ResponseCodeEnum.REQUEST_SUCCESS.getCode();
+        return this.code == CommonCodeEnum.REQUEST_SUCCESS.getCode();
     }
 
     public int getCode() {
@@ -55,28 +55,28 @@ public class ServerResponse<T> implements Serializable {
     }
 
     public static <T> ServerResponse<T> createBySuccess() {
-        return new ServerResponse<T>(ResponseCodeEnum.REQUEST_SUCCESS.getCode());
+        return new ServerResponse<T>(CommonCodeEnum.REQUEST_SUCCESS.getCode());
     }
 
     public static <T> ServerResponse<T> createBySuccessMessage(String msg) {
-        return new ServerResponse<T>(ResponseCodeEnum.REQUEST_SUCCESS.getCode(), msg);
+        return new ServerResponse<T>(CommonCodeEnum.REQUEST_SUCCESS.getCode(), msg);
     }
 
     public static <T> ServerResponse<T> createBySuccess(T data) {
-        return new ServerResponse<T>(ResponseCodeEnum.REQUEST_SUCCESS.getCode(), data);
+        return new ServerResponse<T>(CommonCodeEnum.REQUEST_SUCCESS.getCode(), data);
     }
 
     public static <T> ServerResponse<T> createBySuccess(String msg, T data) {
-        return new ServerResponse<T>(ResponseCodeEnum.REQUEST_SUCCESS.getCode(), msg, data);
+        return new ServerResponse<T>(CommonCodeEnum.REQUEST_SUCCESS.getCode(), msg, data);
     }
 
 
     public static <T> ServerResponse<T> createByError() {
-        return new ServerResponse<T>(ResponseCodeEnum.REQUEST_FAIL.getCode(), ResponseCodeEnum.REQUEST_FAIL.getMsg());
+        return new ServerResponse<T>(CommonCodeEnum.REQUEST_FAIL.getCode(), CommonCodeEnum.REQUEST_FAIL.getMsg());
     }
 
     public static <T> ServerResponse<T> createByErrorMessage(String errorMsg) {
-        return new ServerResponse<T>(ResponseCodeEnum.REQUEST_FAIL.getCode(), errorMsg);
+        return new ServerResponse<T>(CommonCodeEnum.REQUEST_FAIL.getCode(), errorMsg);
     }
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String errorMsg) {

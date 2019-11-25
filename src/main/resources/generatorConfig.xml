@@ -48,9 +48,6 @@
         <table tableName="loving_mall_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="order_id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="loving_mall_order_item" domainObjectName="OrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <generatedKey column="order_item_id" sqlStatement="MySql" identity="true"/>
-        </table>
         <table tableName="loving_mall_shopping_cart_item" domainObjectName="ShoppingCartItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="cart_item_id" sqlStatement="MySql" identity="true"/>
         </table>
@@ -59,6 +56,21 @@
         </table>
         <table tableName="loving_mall_user_address" domainObjectName="UserAddress" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="address_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="loving_mall_carousel" domainObjectName="Carousel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="carousel_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="loving_mall_activity" domainObjectName="Activity" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="activity_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="loving_mall_activity_item" domainObjectName="ActivityItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="activity_item_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="loving_mall_order_item" domainObjectName="OrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="order_item_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="loving_mall_welcome" domainObjectName="Welcome" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="welcome_id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
 </generatorConfiguration>

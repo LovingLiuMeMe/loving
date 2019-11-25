@@ -3,6 +3,8 @@ package cn.lovingliu.lovingmall.mbg.mapper;
 import cn.lovingliu.lovingmall.mbg.model.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Long userId);
 
@@ -17,4 +19,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User selectByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
+
+    List<User> selectAll();
 }

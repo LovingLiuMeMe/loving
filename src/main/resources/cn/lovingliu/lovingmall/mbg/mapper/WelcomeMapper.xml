@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lovingliu.lovingmall.mbg.mapper.WelcomeMapper">
+  <resultMap id="BaseResultMap" type="cn.lovingliu.lovingmall.mbg.model.Welcome">
+    <id column="welcome_id" jdbcType="INTEGER" property="welcomeId" />
+    <result column="welcome_url" jdbcType="VARCHAR" property="welcomeUrl" />
+    <result column="welcome_rank" jdbcType="INTEGER" property="welcomeRank" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="INTEGER" property="updateUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    welcome_id, welcome_url, welcome_rank, create_time, create_user, update_time, update_user
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loving_mall_welcome
+    where welcome_id = #{welcomeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from loving_mall_welcome
+    where welcome_id = #{welcomeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.lovingliu.lovingmall.mbg.model.Welcome">
+    <selectKey keyProperty="welcomeId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into loving_mall_welcome (welcome_url, welcome_rank, create_time, 
+      create_user, update_time, update_user
+      )
+    values (#{welcomeUrl,jdbcType=VARCHAR}, #{welcomeRank,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lovingliu.lovingmall.mbg.model.Welcome">
+    <selectKey keyProperty="welcomeId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into loving_mall_welcome
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="welcomeUrl != null">
+        welcome_url,
+      </if>
+      <if test="welcomeRank != null">
+        welcome_rank,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="welcomeUrl != null">
+        #{welcomeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="welcomeRank != null">
+        #{welcomeRank,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lovingliu.lovingmall.mbg.model.Welcome">
+    update loving_mall_welcome
+    <set>
+      <if test="welcomeUrl != null">
+        welcome_url = #{welcomeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="welcomeRank != null">
+        welcome_rank = #{welcomeRank,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=INTEGER},
+      </if>
+    </set>
+    where welcome_id = #{welcomeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lovingliu.lovingmall.mbg.model.Welcome">
+    update loving_mall_welcome
+    set welcome_url = #{welcomeUrl,jdbcType=VARCHAR},
+      welcome_rank = #{welcomeRank,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=INTEGER}
+    where welcome_id = #{welcomeId,jdbcType=INTEGER}
+  </update>
+  <select id="list" resultMap="BaseResultMap">
+     select
+     <include refid="Base_Column_List" />
+     from loving_mall_welcome
+  </select>
+</mapper>

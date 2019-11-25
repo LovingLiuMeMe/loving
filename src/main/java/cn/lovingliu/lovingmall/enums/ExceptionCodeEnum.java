@@ -11,7 +11,11 @@ public enum ExceptionCodeEnum implements CodeEnum {
     AUTH_CODE_TIME_OUT(1003,"验证码过期"),
     USER_REGISTER_ERROR(1004,"用户注册失败"),
     LOGIN_TIME_OUT(1005,"登录超时,请重新登录"),
-    USER_NOT_EXIT(1006,"用户不存在");
+    USER_NOT_EXIT(1006,"用户不存在"),
+    PRODUCT_NOT_EXIT(1007,"商品不存在"),
+    ORDER_NOT_EXIT(1008,"订单不存在"),
+    ACTIVITY_NOT_EXIT(1009,"活动不存在"),
+    AUTHORIZE_FAIL(1010, "权限不足");
 
     private final int code;
     private final String msg;

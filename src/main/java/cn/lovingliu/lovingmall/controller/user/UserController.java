@@ -6,6 +6,7 @@ import cn.lovingliu.lovingmall.enums.ExceptionCodeEnum;
 import cn.lovingliu.lovingmall.exception.LovingMallException;
 import cn.lovingliu.lovingmall.mbg.model.User;
 import cn.lovingliu.lovingmall.service.RedisService;
+import cn.lovingliu.lovingmall.service.UserAddressService;
 import cn.lovingliu.lovingmall.service.UserService;
 import cn.lovingliu.lovingmall.util.CookieUtil;
 import io.swagger.annotations.Api;
@@ -21,6 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,6 +42,9 @@ public class UserController {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private UserAddressService userAddressService;
+
     @Value("${redis.key.prefix.loginToken}")
     private String REDIS_LOGIN_TOKEN;
 
@@ -57,16 +62,24 @@ public class UserController {
             log.error("用户注册时报错:{}",msg);
             throw new LovingMallException(ExceptionCodeEnum.PARAM_ERROR.getCode(),msg);
         }
-
-        return userService.register(userDTO);
+        int count = userService.register(userDTO);
+        if(count > 0){
+            return ServerResponse.createBySuccessMessage("注册成功");
+        }else {
+            return ServerResponse.createBySuccessMessage("注册失败");
+        }
     }
 
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public ServerResponse login(@ApiParam("用户邮箱") @RequestParam("userName") String userName,
-                                @ApiParam("用户密码") @RequestParam("password") String password,
+    public ServerResponse login(@RequestBody @Valid UserDTO userDTO,BindingResult bindingResult,
                                 HttpServletResponse response){
-        User user = userService.findByUserNameAndPassword(userName,password);
+        if(bindingResult.hasErrors()){
+            String msg = bindingResult.getFieldError().getDefaultMessage();
+            log.error("用户登录时报错:{}",msg);
+            throw new LovingMallException(ExceptionCodeEnum.PARAM_ERROR.getCode(),msg);
+        }
+        User user = userService.findByUserNameAndPassword(userDTO);
         if(user == null){
             throw new LovingMallException(ExceptionCodeEnum.USER_NOT_EXIT);
         }
@@ -115,4 +128,12 @@ public class UserController {
             return ServerResponse.createByErrorMessage("更新失败");
         }
     }
+
+    @ApiOperation("用户列表")
+    @GetMapping("/list")
+    public ServerResponse list() {
+        List<User> userList = userService.list();
+        return ServerResponse.createBySuccess("获取成功", userList);
+    }
+
 }

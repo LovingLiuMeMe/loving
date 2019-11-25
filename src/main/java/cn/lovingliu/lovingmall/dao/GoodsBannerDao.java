@@ -5,5 +5,6 @@ package cn.lovingliu.lovingmall.dao;
  * @Description:
  * @Date：Created in 2019-11-11
  */
-public class GoodsBannerDao {
+public interface GoodsBannerDao {
+
 }

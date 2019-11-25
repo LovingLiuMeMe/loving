@@ -27,4 +27,5 @@ public interface GoodsInfoMapper {
     int deleteByPrimaryKeyList(@Param("goodsInfoIdList") List<Long> goodsInfoIdList);
     int updateGoodsInfoStockNum(@Param("list") List<OrderItemDTO> orderItemDTOList);
     List<GoodsInfo> selectByPrimaryKeyList(@Param("goodsInfoIdList") List<Long> goodsInfoIdList);
+
 }

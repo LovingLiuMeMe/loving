@@ -1,5 +1,5 @@
 server:
-  port: 12345
+  port: 80
   servlet:
     context-path: /lovingmall
 spring:
@@ -7,7 +7,7 @@ spring:
     name: lovingmall
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/loving_mall?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/loving_mall?characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
     password: root
   mail:
@@ -21,7 +21,7 @@ spring:
     from: lovingliu@126.com
 
   redis:
-    host: 127.0.0.1
+    host: 49.235.110.134
     database: 0
     port: 6379
     password: lovingliu
@@ -32,6 +32,12 @@ spring:
         max-wait: -1ms
         max-idle: 10
         min-idle: 0
+  # 更改文件大小限制
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
 mybatis:
   mapper-locations:
     - classpath:mapper/*.xml
@@ -47,8 +53,12 @@ redis:
     expire:
       authCodeExpire: 120
       loginTokenExpire: 604800
-
 user:
   cookieKey: "lovingUser"
 adminUser:
   cookieKey: "lovingAdmin"
+
+# ftp
+ftp:
+  image:
+    prefix: http://img.lovingliu.cn/

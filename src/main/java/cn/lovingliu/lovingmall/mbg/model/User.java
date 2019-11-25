@@ -1,5 +1,9 @@
 package cn.lovingliu.lovingmall.mbg.model;
 
+import cn.lovingliu.lovingmall.util.serializer.DateToDateFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,6 +34,7 @@ public class User implements Serializable {
      *
      * @mbg.generated
      */
+    @JsonIgnore
     private String password;
 
     /**
@@ -58,6 +63,7 @@ public class User implements Serializable {
      *
      * @mbg.generated
      */
+    @JsonSerialize(using = DateToDateFormat.class)
     private Date createTime;
 
     /**

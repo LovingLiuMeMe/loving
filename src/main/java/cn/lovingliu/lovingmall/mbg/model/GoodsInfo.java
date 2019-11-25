@@ -116,6 +116,13 @@ public class GoodsInfo implements Serializable {
      */
     private String goodsDetailContent;
 
+    /**
+     * 配置参数
+     *
+     * @mbg.generated
+     */
+    private String configParam;
+
     private static final long serialVersionUID = 1L;
 
     public Long getGoodsId() {
@@ -246,6 +253,14 @@ public class GoodsInfo implements Serializable {
         this.goodsDetailContent = goodsDetailContent;
     }
 
+    public String getConfigParam() {
+        return configParam;
+    }
+
+    public void setConfigParam(String configParam) {
+        this.configParam = configParam;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -268,6 +283,7 @@ public class GoodsInfo implements Serializable {
         sb.append(", updateUser=").append(updateUser);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", goodsDetailContent=").append(goodsDetailContent);
+        sb.append(", configParam=").append(configParam);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

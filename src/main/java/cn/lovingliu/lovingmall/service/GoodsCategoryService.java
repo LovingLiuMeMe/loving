@@ -9,6 +9,7 @@ import java.util.List;
  * @Description:
  * @Date：Created in 2019-10-30
  */
-public interface goodsCategory {
-    List<GoodsCategory> list();
+public interface GoodsCategoryService {
+    List<GoodsCategory> findInIdListAndDeletedStatus(List<Long> categoryIdList,Integer deletedStatus);
+    List<GoodsCategory> findAllByDeletedStatus(Integer deletedStatus);
 }

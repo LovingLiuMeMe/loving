@@ -18,6 +18,8 @@ public class CookieUtil {
                            int maxAge){
         Cookie cookie = new Cookie(key,value);
         cookie.setPath("/");
+        // 解决跨域（调试使用）
+        cookie.setDomain("localhost");
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
@@ -29,7 +31,7 @@ public class CookieUtil {
         return null;
     }
     private static Map<String,Cookie> readCookieMap(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies() == null ? new Cookie[0] : request.getCookies() ;
         Map<String,Cookie> cookieMap = new HashMap<>();
         for (Cookie cookie:cookies) {
             String name = cookie.getName();

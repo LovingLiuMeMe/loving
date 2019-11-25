@@ -90,4 +90,10 @@
       locked = #{locked,jdbcType=TINYINT}
     where admin_user_id = #{adminUserId,jdbcType=INTEGER}
   </update>
+  <select id="selectByUserNameAndPassword" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from loving_mall_admin_user
+    where login_user_name = #{loginUserName} and login_password = #{loginPassword}
+  </select>
 </mapper>

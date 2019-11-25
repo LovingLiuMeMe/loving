@@ -1,6 +1,9 @@
 package cn.lovingliu.lovingmall.mbg.mapper;
 
 import cn.lovingliu.lovingmall.mbg.model.GoodsCategory;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface GoodsCategoryMapper {
     int deleteByPrimaryKey(Long categoryId);
@@ -14,4 +17,8 @@ public interface GoodsCategoryMapper {
     int updateByPrimaryKeySelective(GoodsCategory record);
 
     int updateByPrimaryKey(GoodsCategory record);
+
+    List<GoodsCategory> selectInIdsAndIsDeleted(@Param("categoryIdList") List<Long> categoryIdList,@Param("deletedStatus")Integer deletedStatus);
+
+    List<GoodsCategory> selectByDeletedStatus(Integer deletedStatus);
 }

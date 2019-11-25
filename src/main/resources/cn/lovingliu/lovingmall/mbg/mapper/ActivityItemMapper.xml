@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lovingliu.lovingmall.mbg.mapper.ActivityItemMapper">
+  <resultMap id="BaseResultMap" type="cn.lovingliu.lovingmall.mbg.model.ActivityItem">
+    <id column="activity_item_id" jdbcType="BIGINT" property="activityItemId" />
+    <result column="activity_id" jdbcType="BIGINT" property="activityId" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_cover_img" jdbcType="VARCHAR" property="goodsCoverImg" />
+    <result column="selling_price" jdbcType="INTEGER" property="sellingPrice" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    activity_item_id, activity_id, goods_id, goods_name, goods_cover_img, selling_price, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loving_mall_activity_item
+    where activity_item_id = #{activityItemId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from loving_mall_activity_item
+    where activity_item_id = #{activityItemId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.lovingliu.lovingmall.mbg.model.ActivityItem">
+    <selectKey keyProperty="activityItemId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into loving_mall_activity_item (activity_id, goods_id, goods_name, 
+      goods_cover_img, selling_price, create_time
+      )
+    values (#{activityId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, 
+      #{goodsCoverImg,jdbcType=VARCHAR}, #{sellingPrice,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.lovingliu.lovingmall.mbg.model.ActivityItem">
+    <selectKey keyProperty="activityItemId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into loving_mall_activity_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsCoverImg != null">
+        goods_cover_img,
+      </if>
+      <if test="sellingPrice != null">
+        selling_price,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        #{activityId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCoverImg != null">
+        #{goodsCoverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="sellingPrice != null">
+        #{sellingPrice,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.lovingliu.lovingmall.mbg.model.ActivityItem">
+    update loving_mall_activity_item
+    <set>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCoverImg != null">
+        goods_cover_img = #{goodsCoverImg,jdbcType=VARCHAR},
+      </if>
+      <if test="sellingPrice != null">
+        selling_price = #{sellingPrice,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where activity_item_id = #{activityItemId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.lovingliu.lovingmall.mbg.model.ActivityItem">
+    update loving_mall_activity_item
+    set activity_id = #{activityId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_cover_img = #{goodsCoverImg,jdbcType=VARCHAR},
+      selling_price = #{sellingPrice,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where activity_item_id = #{activityItemId,jdbcType=BIGINT}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from loving_mall_activity_item
+  </select>
+
+  <insert id="insertSelectiveList" parameterType="java.util.List"  useGeneratedKeys="true" keyProperty="activityItemId">
+    <foreach collection="activityItemList" item="activityItem" index="index" separator=";">
+      insert into loving_mall_activity_item
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="activityItem.activityId != null">
+          activity_id,
+        </if>
+        <if test="activityItem.goodsId != null">
+          goods_id,
+        </if>
+        <if test="activityItem.goodsName != null">
+          goods_name,
+        </if>
+        <if test="activityItem.goodsCoverImg != null">
+          goods_cover_img,
+        </if>
+        <if test="activityItem.sellingPrice != null">
+          selling_price,
+        </if>
+        <if test="activityItem.createTime != null">
+          create_time,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="activityItem.activityId != null">
+          #{activityItem.activityId,jdbcType=BIGINT},
+        </if>
+        <if test="activityItem.goodsId != null">
+          #{activityItem.goodsId,jdbcType=BIGINT},
+        </if>
+        <if test="activityItem.goodsName != null">
+          #{activityItem.goodsName,jdbcType=VARCHAR},
+        </if>
+        <if test="activityItem.goodsCoverImg != null">
+          #{activityItem.goodsCoverImg,jdbcType=VARCHAR},
+        </if>
+        <if test="activityItem.sellingPrice != null">
+          #{activityItem.sellingPrice,jdbcType=INTEGER},
+        </if>
+        <if test="activityItem.createTime != null">
+          #{activityItem.createTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <delete id="deleteByActivityId">
+    delete
+    from loving_mall_activity_item
+    where activity_id = #{activityId}
+  </delete>
+</mapper>

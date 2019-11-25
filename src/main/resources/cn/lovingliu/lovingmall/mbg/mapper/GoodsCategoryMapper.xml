@@ -126,4 +126,29 @@
       update_user = #{updateUser,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=BIGINT}
   </update>
+  <select id="selectInIdsAndIsDeleted" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from loving_mall_goods_category
+    <where>
+        <if test="categoryIdList != null">
+          and category_id in
+          <foreach collection="categoryIdList" item="categoryId" index="index" open="(" close=")" separator=",">
+            #{categoryId}
+          </foreach>
+        </if>
+        <if test="deletedStatus != null">
+          and is_deleted = #{deletedStatus}
+        </if>
+    </where>
+    order by category_rank desc
+  </select>
+  <select id="selectByDeletedStatus" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from loving_mall_goods_category
+    <where>
+      and is_deleted = #{deletedStatus}
+    </where>
+  </select>
 </mapper>

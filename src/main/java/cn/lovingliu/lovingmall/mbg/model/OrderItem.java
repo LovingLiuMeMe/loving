@@ -60,6 +60,13 @@ public class OrderItem implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 订单描述
+     *
+     * @mbg.generated
+     */
+    private String goodsIntro;
+
     private static final long serialVersionUID = 1L;
 
     public Long getOrderItemId() {
@@ -126,6 +133,14 @@ public class OrderItem implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getGoodsIntro() {
+        return goodsIntro;
+    }
+
+    public void setGoodsIntro(String goodsIntro) {
+        this.goodsIntro = goodsIntro;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -140,6 +155,7 @@ public class OrderItem implements Serializable {
         sb.append(", sellingPrice=").append(sellingPrice);
         sb.append(", goodsCount=").append(goodsCount);
         sb.append(", createTime=").append(createTime);
+        sb.append(", goodsIntro=").append(goodsIntro);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
