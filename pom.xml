@@ -11,6 +11,8 @@
     <groupId>cn.lovingliu</groupId>
     <artifactId>loving-mall</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
     <name>loving-mall</name>
     <description>Demo project for Spring Boot</description>
 
@@ -121,6 +123,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>cn.lovingliu.lovingmall.LovingMallApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
