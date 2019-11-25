@@ -195,3 +195,26 @@ public class WebSocketServer {
 }
 
 ```
+###  mvn clean package -Dmaven.test.skip=true 被Killed
+
+相关命令：
+
+1.创建/home/swap这么一个分区文件。文件大小是512000个block，一般情况下1个block为1k，所以这里空间是512M，这个空间大小自己随意定义。
+
+dd if=/dev/zero of=/home/swap bs=1024 count=512000
+
+2.将这个分区变成swap分区。
+
+/sbin/mkswap /home/swap
+
+3.使用swap分区，使其生效。
+
+/sbin/swapon /home/swap
+
+4.查看swap分区大小。
+
+free -m
+
+备注：系统重启后swap分区会还原，解决办法：修改/etc/fstab文件，增加一行
+
+/home/swap           swap                 swap       defaults              0 0
