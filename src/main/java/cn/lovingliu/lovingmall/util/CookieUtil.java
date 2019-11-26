@@ -18,8 +18,6 @@ public class CookieUtil {
                            int maxAge){
         Cookie cookie = new Cookie(key,value);
         cookie.setPath("/");
-        // 解决跨域（调试使用）
-        cookie.setDomain("localhost");
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
