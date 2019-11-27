@@ -15,7 +15,9 @@ public enum ExceptionCodeEnum implements CodeEnum {
     PRODUCT_NOT_EXIT(1007,"商品不存在"),
     ORDER_NOT_EXIT(1008,"订单不存在"),
     ACTIVITY_NOT_EXIT(1009,"活动不存在"),
-    AUTHORIZE_FAIL(1010, "权限不足");
+    AUTHORIZE_FAIL(1010, "权限不足"),
+    STOCK_WARN(1011, "库存警告"),
+    SYSTEM_BUSY(1012, "系统正忙");
 
     private final int code;
     private final String msg;

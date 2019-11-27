@@ -1,15 +1,18 @@
 package cn.lovingliu.lovingmall.service.impl;
 
+import cn.lovingliu.lovingmall.component.RedisLock;
 import cn.lovingliu.lovingmall.dto.GoodsInfoDTO;
 import cn.lovingliu.lovingmall.enums.CommonCodeEnum;
 import cn.lovingliu.lovingmall.enums.ExceptionCodeEnum;
 import cn.lovingliu.lovingmall.exception.LovingMallException;
 import cn.lovingliu.lovingmall.mbg.mapper.GoodsInfoMapper;
 import cn.lovingliu.lovingmall.mbg.model.GoodsInfo;
+import cn.lovingliu.lovingmall.mbg.model.OrderItem;
 import cn.lovingliu.lovingmall.service.GoodsInfoService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,6 +29,11 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Autowired
     private GoodsInfoMapper goodsInfoMapper;
 
+    @Autowired
+    private RedisLock redisLock;
+
+    @Value("redis.lock.timeout")
+    private Integer TIMEOUT;
     @Override
     public List<GoodsInfo> listByUser(int pageNum, int pageSize, String orderBy, String orderType, String keyword) {
         PageHelper.startPage(pageNum, pageSize);
@@ -104,5 +112,38 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
             throw new LovingMallException(ExceptionCodeEnum.PARAM_ERROR);
         }
 
+    }
+
+    @Override
+    public Integer decreaseStock(List<OrderItem> orderItemList) {
+        /**
+         * 加锁
+         */
+        int count = 0;
+        for (OrderItem orderItem: orderItemList) {
+            /**
+             * 加锁
+             */
+            long time = System.currentTimeMillis() + TIMEOUT;
+            if(!redisLock.lock(orderItem.getGoodsId().toString(), String.valueOf(time))){
+                throw new LovingMallException(ExceptionCodeEnum.SYSTEM_BUSY);
+            }
+            GoodsInfo goodsInfo = goodsInfoMapper.selectByPrimaryKey(orderItem.getGoodsId());
+            if(goodsInfo == null){
+                throw new LovingMallException(ExceptionCodeEnum.PRODUCT_NOT_EXIT);
+            }
+            Integer resultStock = goodsInfo.getStockNum() - orderItem.getGoodsCount();
+
+            if(resultStock < 0){
+                throw new LovingMallException(ExceptionCodeEnum.STOCK_WARN);
+            }
+            goodsInfo.setStockNum(resultStock);
+            count += goodsInfoMapper.updateByPrimaryKeySelective(goodsInfo);
+            /**
+             * 解锁
+             */
+            redisLock.unlock(orderItem.getGoodsId().toString(),String.valueOf(time));
+        }
+        return count;
     }
 }

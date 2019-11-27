@@ -2,6 +2,7 @@ package cn.lovingliu.lovingmall.service;
 
 import cn.lovingliu.lovingmall.dto.GoodsInfoDTO;
 import cn.lovingliu.lovingmall.mbg.model.GoodsInfo;
+import cn.lovingliu.lovingmall.mbg.model.OrderItem;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface GoodsInfoService {
     Integer removeGoodsInfo(List<Long> goodsInfoIdList);
     List<GoodsInfo> listAllBySellStatus(Integer goodsSellStatus);
     List<GoodsInfo> ListByGoodsIdList(List<Long> goodsIdList);
+    Integer decreaseStock(List<OrderItem> orderItemList);
 }

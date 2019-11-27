@@ -53,6 +53,8 @@ redis:
     expire:
       authCodeExpire: 120
       loginTokenExpire: 604800
+  lock:
+    timeout: 10000
 user:
   cookieKey: "lovingUser"
 adminUser:

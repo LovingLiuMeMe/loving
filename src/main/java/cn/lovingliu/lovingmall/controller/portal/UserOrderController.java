@@ -11,6 +11,7 @@ import cn.lovingliu.lovingmall.service.GoodsInfoService;
 import cn.lovingliu.lovingmall.service.OrderItemService;
 import cn.lovingliu.lovingmall.service.OrderService;
 import cn.lovingliu.lovingmall.service.WebSocketServer;
+import cn.lovingliu.lovingmall.util.BigDecimalUtil;
 import cn.lovingliu.lovingmall.vo.OrderVO;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
@@ -19,9 +20,13 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -104,30 +109,49 @@ public class UserOrderController {
 
     @ApiOperation("创建订单")
     @PostMapping("/save")
-    public ServerResponse save(@RequestBody OrderDTO order){
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.REPEATABLE_READ)
+    public ServerResponse save(@RequestBody OrderDTO orderDTO){
+        BigDecimal orderAllAmount = new BigDecimal("0");
+
         Order mainOrder = new Order();
-        BeanUtils.copyProperties(order, mainOrder);
-        // 1.生成订单号
+        BeanUtils.copyProperties(orderDTO, mainOrder);
+        // 1.生成订单流水号
         mainOrder.setOrderNo(UUID.randomUUID().toString());
+
         if(mainOrder.getOrderStatus() == 1){
             mainOrder.setPayTime(new Date());
         }
-        // 2.创建订单
-        Long orderId = orderService.save(mainOrder);
-
-        if(orderId == null){
-            throw new LovingMallException(ExceptionCodeEnum.ORDER_NOT_EXIT);
-        }
-        List<OrderItem> orderItemList = order.getOrderItemList();
+        List<OrderItem> orderItemList = orderDTO.getOrderItemList();
 
         List<Long> goodsInfoIdList = orderItemList.stream().map(e -> {
             return e.getGoodsId();
         }).collect(Collectors.toList());
 
-        // 3.获得订单商品列表
         List<GoodsInfo> goodsInfoList = goodsInfoService.ListByGoodsIdList(goodsInfoIdList);
 
-        // 4.组装数据
+
+        // 2.计算订单总金额
+        for (GoodsInfo goodsInfo: goodsInfoList) {
+            for(OrderItem orderItem : orderItemList) {
+                if(goodsInfo.getGoodsId().longValue() == orderItem.getGoodsId().longValue()){
+                    orderAllAmount = BigDecimalUtil.add(
+                            orderAllAmount.doubleValue(),
+                            BigDecimalUtil.mul(
+                                    goodsInfo.getSellingPrice().doubleValue(),
+                                    orderItem.getGoodsCount().doubleValue()
+                            ).doubleValue()
+                    );
+                }
+            }
+        }
+        mainOrder.setTotalPrice(orderAllAmount.intValue());
+        // 3.保存订单
+        Long orderId = orderService.save(mainOrder);
+        if(orderId == null){
+            throw new LovingMallException(ExceptionCodeEnum.ORDER_NOT_EXIT);
+        }
+
+        // 4.订单详情入库
         for (GoodsInfo goodsInfo: goodsInfoList) {
             for(OrderItem orderItem : orderItemList) {
                 if(goodsInfo.getGoodsId().longValue() == orderItem.getGoodsId().longValue()){
@@ -137,9 +161,7 @@ public class UserOrderController {
             }
         }
 
-        // 5.保存数据
-        log.warn("【处理之后的数据】=> {}",order);
-
+        // 5.保存订单详情
         int count = orderItemService.saveList(orderItemList);
         if(count > 0){
             try{
@@ -147,9 +169,16 @@ public class UserOrderController {
             }catch (IOException e){
                 log.error("【websocket】通知报错 => ",e.getMessage());
             }
-            return ServerResponse.createBySuccessMessage("下单成功");
         }else{
-            return ServerResponse.createBySuccessMessage("下单失败");
+           throw new LovingMallException(ExceptionCodeEnum.PARAM_ERROR);
+        }
+
+        // 6.扣库存
+        count = goodsInfoService.decreaseStock(orderDTO.getOrderItemList());
+        if(count > 0){
+            return ServerResponse.createBySuccessMessage("下单成功");
+        }else {
+            return ServerResponse.createByErrorMessage("下单失败");
         }
     }
 
