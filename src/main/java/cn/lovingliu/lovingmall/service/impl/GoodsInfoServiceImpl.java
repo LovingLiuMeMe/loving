@@ -32,8 +32,9 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Autowired
     private RedisLock redisLock;
 
-    @Value("redis.lock.timeout")
+    @Value("${redis.lock.timeout}")
     private Integer TIMEOUT;
+
     @Override
     public List<GoodsInfo> listByUser(int pageNum, int pageSize, String orderBy, String orderType, String keyword) {
         PageHelper.startPage(pageNum, pageSize);
