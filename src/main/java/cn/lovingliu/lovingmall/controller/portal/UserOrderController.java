@@ -57,6 +57,9 @@ public class UserOrderController {
          * 查询所以订单
          */
         List<Order> orderList = orderService.listWithDeletedStatus(0,0,null,null,userId, null);
+        if(orderList.size() < 1){
+            return ServerResponse.createByErrorMessage("暂没有订单");
+        }
         List<Long> orderIdList = orderList.stream().map(e -> e.getOrderId()).collect(Collectors.toList());
         /**
          * 查看订单中的商品信息
@@ -178,7 +181,7 @@ public class UserOrderController {
         if(count > 0){
             return ServerResponse.createBySuccessMessage("下单成功");
         }else {
-            return ServerResponse.createByErrorMessage("下单失败");
+            throw new LovingMallException(ExceptionCodeEnum.STOCK_WARN);
         }
     }
 
