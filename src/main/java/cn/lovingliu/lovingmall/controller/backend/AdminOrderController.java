@@ -3,8 +3,6 @@ package cn.lovingliu.lovingmall.controller.backend;
 import cn.lovingliu.lovingmall.common.CommonPage;
 import cn.lovingliu.lovingmall.common.ServerResponse;
 import cn.lovingliu.lovingmall.enums.CommonCodeEnum;
-import cn.lovingliu.lovingmall.enums.ExceptionCodeEnum;
-import cn.lovingliu.lovingmall.exception.LovingMallException;
 import cn.lovingliu.lovingmall.mbg.model.Order;
 import cn.lovingliu.lovingmall.mbg.model.OrderItem;
 import cn.lovingliu.lovingmall.service.OrderItemService;
@@ -96,11 +94,8 @@ public class AdminOrderController {
     }
     @ApiOperation("删除订单")
     @PostMapping("/delete")
-    public ServerResponse delete(@ApiParam("图片名称")
-                                 @RequestParam Long[] orderIds){
-        if(orderIds.length < 1){
-            throw new LovingMallException(ExceptionCodeEnum.PARAM_ERROR);
-        }
+    public ServerResponse delete(@ApiParam("订单Id") @RequestParam("orderId") Long orderId){
+        Long[] orderIds = new Long[] {orderId};
         int count = orderService.deleteByOrderIds(orderIds);
         if(count > 0){
             return ServerResponse.createBySuccessMessage("删除成功");
